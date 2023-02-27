@@ -1,18 +1,20 @@
 plugins {
     id("com.android.application")
     kotlin("android")
+    kotlin("kapt")
+    id(Dependencies.DaggerHilt.daggerHiltPlugin)
 }
 
 android {
-    namespace = "com.example.githubrepositoryreader"
-    compileSdk = 33
+    namespace = Config.namespace
+    compileSdk = Config.compileSdk
 
     defaultConfig {
-        applicationId = "com.example.githubrepositoryreader"
-        minSdk = 21
-        targetSdk = 33
-        versionCode = 1
-        versionName = "1.0"
+        applicationId = Config.applicationId
+        minSdk = Config.minSdk
+        targetSdk = Config.targetSdk
+        versionCode = Config.versionCode
+        versionName = Config.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -34,15 +36,38 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.8.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation(Dependencies.kotlinCore)
+    implementation(Dependencies.appCompat)
+    implementation(Dependencies.material)
+    implementation(Dependencies.constraintLayout)
+
+    implementation(Dependencies.lifecycleViewModel)
+
+    implementation(Dependencies.Coroutines.kotlinCoroutinesCore)
+    implementation(Dependencies.Coroutines.kotlinCoroutinesAndroid)
+
+    implementation(Dependencies.Retrofin2.retrofit)
+    implementation(Dependencies.Retrofin2.converterGson)
+
+    implementation(Dependencies.Room.roomRuntime)
+    implementation(Dependencies.Room.roomKtx)
+    kapt(Dependencies.Room.roomCompilerKapt)
+
+    implementation(Dependencies.DaggerHilt.hiltAndroid)
+    kapt(Dependencies.DaggerHilt.hiltAndroidCompiler)
+
+    testImplementation(Dependencies.Tests.jInit)
+    androidTestImplementation(Dependencies.Tests.jUtitExt)
+    androidTestImplementation(Dependencies.Tests.espressoCore)
+}
+
+kapt {
+    correctErrorTypes = true
 }
